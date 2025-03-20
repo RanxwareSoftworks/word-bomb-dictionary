@@ -1,18 +1,19 @@
 // Word Bomb Prompt Solver
 
-var config = {
-  prompt: "-or",
-  descending: true,
-  alphabetical: true,
-  fileName: "PromptWordListForWordBomb"
-};
-
 function runPromptSolver() {
+  var promptConfig = {
+    prompt: "-",
+    descending: true,
+    alphabetical: true,
+    fileName: "PromptWordListForWordBomb"
+  };
+
+  console.log(promptConfig)
   console.time("PromptSolver");
   console.log("Starting script...");
   const dictFilePath = "https://github.com/RanxwareSoftworks/word-bomb-dictionary/raw/refs/heads/main/truewordbomblist.txt";
   const placeholderUrl = "https://example.org";
-  const realFileName = `${config.fileName}.txt`;
+  const realFileName = `${promptConfig.fileName}.txt`;
   const resultDriveFilePath = "https://drive.google.com/file/d/";
 
   var fileConfig = {
@@ -25,7 +26,12 @@ function runPromptSolver() {
   const preresult = UrlFetchApp.fetch(placeholderUrl);
   var blob = preresult.getBlob();
 
-  var newPrompt = config.prompt.toUpperCase();
+  var newPrompt = promptConfig.prompt;
+  try {
+    newPrompt = newPrompt.toUpperCase();
+  } catch(_) {
+    console.warn("Unable to convert prompt to uppercase. This is likely if the prompt only contains symbols.");
+  };
 
   const result = UrlFetchApp.fetch(dictFilePath);
   var content = result.getContentText();
@@ -37,13 +43,13 @@ function runPromptSolver() {
   });
 
   console.log("Sorting word list...");
-  if (config.alphabetical) {
+  if (promptConfig.alphabetical) {
     wordList.sort();
   };
   wordList.sort((w1, w2) => {
     var len1 = w1.length;
     var len2 = w2.length;
-    if (config.descending) {
+    if (promptConfig.descending) {
       return len2 - len1;
     } else {
       return len1 - len2;
@@ -61,9 +67,9 @@ function runPromptSolver() {
   });
   blob.setDataFromString(text);
   
-  console.log("File doesn't exist. Creating new file...");
+  console.log("Creating text file...");
   var newFile = Drive.Files.create(fileConfig, blob);
-  console.log(`Finished! There are ${wordList.length} words containing ${config.prompt}`);
+  console.log(`Finished! There are ${wordList.length} words containing ${promptConfig.prompt}`);
   console.log(`Text file: ${resultDriveFilePath + newFile.id}`)
   console.timeEnd("PromptSolver");
 }
