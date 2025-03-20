@@ -3,19 +3,19 @@
 // NOTE: This can only run with Google Apps Script (and with the Drive API Installed)!
 // Average time (for all words): 20-40 minutes
 
-var scriptConfig = {
-  fileName: "promptsPlaceholder", // Google drive file name
-  minWordLength: 0, // Minimum char length for each word (set to null or 0 for no limit)
-  maxWordLength: 3, // Maxmimum char length for each word (set to null or Infinity for no limit)
-  sorting: {
-    enabled: true,
-    lengthOrdering: true, // Sorts words by char length
-    descending: true, // Sorts words by descending/ascending length (if above if enabled)
-    alphabetical: true, // Sorts words alphabetically
-  }
-}
-
 function createDictionaryFile() {
+  var scriptConfig = {
+    fileName: "thewordbombdictionary", // Google drive file name
+    minWordLength: 0, // Minimum char length for each word (set to null or 0 for no limit)
+    maxWordLength: 3, // Maxmimum char length for each word (set to null or Infinity for no limit)
+    sorting: {
+      enabled: true,
+      lengthOrdering: true, // Sorts words by char length
+      descending: true, // Sorts words by descending/ascending length (if above if enabled)
+      alphabetical: true, // Sorts words alphabetically
+    }
+  }
+
   console.log("Loaded script!");
   var timer1 = new Date();
   var startingTime = timer1.getUTCSeconds();
